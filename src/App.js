@@ -18,14 +18,10 @@ class App extends React.Component {
     this.calcRankings = this.calcRankings.bind(this);
     this.toggleAdmin = this.toggleAdmin.bind(this);
     this.switchTab = this.switchTab.bind(this);
-    this.pullFirestore = this.pullFirestore.bind(this);
     this.componentWillMount = this.componentWillMount.bind(this);
   }
 
   componentWillMount() {
-    this.pullFirestore();
-  }
-  pullFirestore() {
     let db = firebase.firestore();
     db.collection("rankings")
       .get()
