@@ -6,32 +6,6 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      unrankedTeams: [
-        "Astralis",
-        "Liquid",
-        "Evil Geniuses",
-        "fnatic",
-        "Vitality",
-        "Avangar",
-        "Mousesports",
-        "100 Thieves",
-        "Natus Vincere",
-        "ENCE",
-        "NIP",
-        "Complexity",
-        "Furia",
-        "G2",
-        "forZe",
-        "Cr4zy",
-        "MIBR",
-        "North",
-        "Heroic",
-        "FaZe",
-        "Sharks",
-        "Tricked",
-        "BIG",
-        "Grayhound"
-      ],
       rankedTeams: {},
       numOfTeamsRanked: 0
     };
@@ -69,11 +43,12 @@ class Form extends React.Component {
     });
   }
   render() {
-    const listTeams = this.state.unrankedTeams.map(team => (
+    const listTeams = this.props.unrankedTeams.map(team => (
       <div id={team} className="formElem" key={team}>
         {team}
       </div>
     ));
+
     return (
       <div className="Form">
         <div className="titleBox">

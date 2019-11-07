@@ -13,15 +13,16 @@ class App extends React.Component {
       numOfRankers: 0,
       isAdmin: false,
       rankedTeams: [],
-      rankings: []
+      rankings: [],
+      unrankedTeams: []
     };
     this.calcRankings = this.calcRankings.bind(this);
     this.toggleAdmin = this.toggleAdmin.bind(this);
     this.switchTab = this.switchTab.bind(this);
-    this.componentWillMount = this.componentWillMount.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let db = firebase.firestore();
     db.collection("rankings")
       .get()
@@ -36,6 +37,13 @@ class App extends React.Component {
         });
       })
       .then(this.calcRankings);
+    db.collection("teams")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          this.setState({ unrankedTeams: doc.data().teams });
+        });
+      });
   }
 
   calcRankings() {
@@ -85,7 +93,6 @@ class App extends React.Component {
     this.setState({
       rankedTeams: allTeams
     });
-    console.log(this.state.rankedTeams);
     return allTeams;
   }
   toggleAdmin() {
@@ -116,7 +123,7 @@ class App extends React.Component {
       return (
         <div>
           <Header isHome={this.state.isHome} switch={this.switchTab} />
-          <Form />
+          <Form unrankedTeams={this.state.unrankedTeams} />
         </div>
       );
     }
