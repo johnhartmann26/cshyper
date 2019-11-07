@@ -6,7 +6,6 @@ class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFirstAttempt: false,
       unrankedTeams: [
         "Astralis",
         "Liquid",
@@ -44,22 +43,19 @@ class Form extends React.Component {
     db.collection("rankings").add(submission);
   }
   completeRankings() {
-    if (this.state.isFirstAttempt) {
-      this.setState({ isFirstAttempt: false });
-      alert(
-        "Are you sure? This cannot be undone. \n Click submit again to complete your rankings."
-      );
-    } else {
-      let submission = {
-        Ranker: "User",
-        Country: "Country"
-      };
-      let rank = 0;
-      document
-        .querySelectorAll("#dropTarget div")
-        .forEach(element => (submission[++rank] = element.innerText));
-      this.pushFirestore(submission);
-    }
+    let name = prompt("What is your name?");
+    let country = prompt("What country are you from?");
+    let date = Date();
+    let submission = {
+      Ranker: name,
+      Country: country,
+      Date: date
+    };
+    let rank = 0;
+    document
+      .querySelectorAll("#dropTarget div")
+      .forEach(element => (submission[++rank] = element.innerText));
+    this.pushFirestore(submission);
   }
   countTeams() {
     let rankedTeams = {};
@@ -79,28 +75,30 @@ class Form extends React.Component {
       </div>
     ));
     return (
-      <div>
-        <div className="Form">
-          <div className="titleBox">
-            <h2>Last Week's Rankings</h2>
-            <p>
-              Please drag teams from the left box into the right box. When
-              you've finished, click the submit button at the bottom.
-            </p>
-          </div>
-          <div className="titleBox">
-            <h2>Your Rankings</h2>
-            <p>
-              You have ranked {this.state.numOfTeamsRanked} out of 20 teams.
-              Please complete all 20 of your rankings before you submit.
-            </p>
-          </div>
-          <div className="dragBox" id="dragElements">
-            {listTeams}
-          </div>
-          <div className="dragBox" id="dropTarget"></div>
+      <div className="Form">
+        <div className="titleBox">
+          <h2>Last Week's Rankings</h2>
+          <p>
+            Please drag teams from the left box into the right box. When you've
+            finished, click the submit button at the bottom.
+          </p>
         </div>
-        <button id="FormSubmit" onClick={this.completeRankings}>
+        <div className="titleBox">
+          <h2>Your Rankings</h2>
+          <p>
+            You have ranked {this.state.numOfTeamsRanked} out of 20 teams.
+            Please complete all 20 of your rankings before you submit.
+          </p>
+        </div>
+        <div className="dragBox" id="dragElements">
+          {listTeams}
+        </div>
+        <div className="dragBox" id="dropTarget"></div>
+        <button
+          disabled={this.state.numOfTeamsRanked !== 20}
+          id="formSubmit"
+          onClick={this.completeRankings}
+        >
           submit
         </button>
       </div>
