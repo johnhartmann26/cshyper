@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Table from "./components/Table";
 import Form from "./components/Form";
 import firebase from "./firebase";
-import "./App.css";
+import "./App.scss";
 
 class App extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class App extends React.Component {
       isAdmin: false,
       rankedTeams: [],
       rankings: [],
-      unrankedTeams: []
+      unrankedTeams: [],
     };
     this.calcRankings = this.calcRankings.bind(this);
     this.toggleAdmin = this.toggleAdmin.bind(this);
@@ -26,12 +26,12 @@ class App extends React.Component {
     let db = firebase.firestore();
     db.collection("rankings")
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          this.setState(curr => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.setState((curr) => {
             let pushed = curr.rankings.concat(doc.data());
             return {
-              rankings: pushed
+              rankings: pushed,
             };
           });
         });
@@ -39,8 +39,8 @@ class App extends React.Component {
       .then(this.calcRankings);
     db.collection("teams")
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
           this.setState({ unrankedTeams: doc.data().teams });
         });
       });
@@ -55,7 +55,7 @@ class App extends React.Component {
       let individualRanking = {
         ranker: response[i]["Ranker"],
         country: response[i]["Country"],
-        rankings: []
+        rankings: [],
       };
       for (let j = 1; j < 21; j++) {
         // change back to 21
@@ -69,14 +69,14 @@ class App extends React.Component {
       for (let j = 0; j < rankings[i].rankings.length; j++) {
         let team = rankings[i].rankings[j].toLowerCase().trim();
         let pointsToAdd = 20 - j;
-        let index = allTeams.findIndex(obj => obj.name === team);
+        let index = allTeams.findIndex((obj) => obj.name === team);
         if (index === -1) {
           allTeams.push({
             name: team,
             points: pointsToAdd,
             best: j + 1,
             worst: j + 1,
-            appearances: 1
+            appearances: 1,
           });
         } else {
           allTeams[index].points += pointsToAdd;
@@ -91,7 +91,7 @@ class App extends React.Component {
     }
     allTeams = allTeams.sort((a, b) => (a.points < b.points ? 1 : -1));
     this.setState({
-      rankedTeams: allTeams
+      rankedTeams: allTeams,
     });
     return allTeams;
   }
