@@ -6,16 +6,17 @@ orange: #e08b22
 
 // variables
 $eerie: #222222;
-
+$bitter: #f87060;
+$pastel: rgba(227, 164, 155, 0.5);
+$light: #cdd7d6;
 // widespread rules
-
 * {
   margin: 0;
   padding: 0;
 }
 html {
-  background: #222;
-  color: #fff;
+  background: $eerie;
+  color: $light;
   font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
 }
 
@@ -47,9 +48,8 @@ body,
 }
 
 .rankingsTable {
-  width: 95%;
-  background: #001f4c;
-  border-radius: 10px;
+  width: 100%;
+  background: $pastel;
 }
 
 .rankingsTableContainer {

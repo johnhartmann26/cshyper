@@ -8,7 +8,8 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-dragula": "^1.1.17",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "react-table-view": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
