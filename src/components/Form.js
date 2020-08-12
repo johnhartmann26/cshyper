@@ -7,7 +7,7 @@ class Form extends React.Component {
     super(props);
     this.state = {
       rankedTeams: {},
-      numOfTeamsRanked: 0
+      numOfTeamsRanked: 0,
     };
     this.countTeams = this.countTeams.bind(this);
     this.completeRankings = this.completeRankings.bind(this);
@@ -17,18 +17,17 @@ class Form extends React.Component {
     db.collection("rankings").add(submission);
   }
   completeRankings() {
-    let name = prompt("What is your name?");
-    let country = prompt("What country are you from?");
     let date = Date();
     let submission = {
-      Ranker: name,
-      Country: country,
-      Date: date
+      Date: date,
     };
     let rank = 0;
     document
-      .querySelectorAll("#dropTarget div")
-      .forEach(element => (submission[++rank] = element.innerText));
+      .querySelectorAll("#dragElements div")
+      .forEach((element) => (submission[++rank] = element.innerText));
+    while (submission.length > 21) {
+      submission.pop();
+    }
     this.pushFirestore(submission);
   }
   countTeams() {
@@ -36,46 +35,22 @@ class Form extends React.Component {
     let rank = 0;
     document
       .querySelectorAll("#dropTarget div")
-      .forEach(element => (rankedTeams[++rank] = element.innerText));
+      .forEach((element) => (rankedTeams[++rank] = element.innerText));
     this.setState({
       rankedTeams: rankedTeams,
-      numOfTeamsRanked: Object.keys(rankedTeams).length
+      numOfTeamsRanked: Object.keys(rankedTeams).length,
     });
   }
   render() {
-    const listTeams = this.props.unrankedTeams.map(team => (
+    const listTeams = this.props.unrankedTeams.map((team) => (
       <div id={team} className="formElem" key={team}>
         {team}
       </div>
     ));
 
     return (
-      <div className="Form">
-        <div className="titleBox">
-          <h2>Last Week's Rankings</h2>
-          <p>
-            Please drag teams from the left box into the right box. When you've
-            finished, click the submit button at the bottom.
-          </p>
-        </div>
-        <div className="titleBox">
-          <h2>Your Rankings</h2>
-          <p>
-            You have ranked {this.state.numOfTeamsRanked} out of 20 teams.
-            Please complete all 20 of your rankings before you submit.
-          </p>
-        </div>
-        <div className="dragBox" id="dragElements">
-          {listTeams}
-        </div>
-        <div className="dragBox" id="dropTarget"></div>
-        <button
-          disabled={this.state.numOfTeamsRanked !== 20}
-          id="formSubmit"
-          onClick={this.completeRankings}
-        >
-          submit
-        </button>
+      <div className="Form" id="dragElements">
+        {listTeams}
       </div>
     );
   }
@@ -83,13 +58,13 @@ class Form extends React.Component {
     dragula(
       [
         document.getElementById("dragElements"),
-        document.getElementById("dropTarget")
+        document.getElementById("dropTarget"),
       ],
       {
         revertOnSpill: true,
-        mirrorContainer: document.body
+        mirrorContainer: document.body,
       }
-    ).on("drop", this.countTeams);
+    );
   }
 }
 

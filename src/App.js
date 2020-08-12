@@ -1,8 +1,10 @@
 import React from "react";
-import Header from "./components/Header";
-import Table from "./components/Table";
+import Rankings from "./components/Rankings";
 import Form from "./components/Form";
 import firebase from "./firebase";
+import LogoPNG from "./components/images/csgo.png";
+import { ReactComponent as StandingsSVG } from "./components/images/medal.svg";
+import { ReactComponent as RulerSVG } from "./components/images/ruler.svg";
 import "./App.scss";
 
 class App extends React.Component {
@@ -21,7 +23,6 @@ class App extends React.Component {
     this.switchTab = this.switchTab.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
   }
-
   componentDidMount() {
     let db = firebase.firestore();
     db.collection("rankings")
@@ -45,7 +46,6 @@ class App extends React.Component {
         });
       });
   }
-
   calcRankings() {
     let response = this.state.rankings;
     let rankings = [];
@@ -67,7 +67,7 @@ class App extends React.Component {
     }
     for (let i = 0; i < rankings.length; i++) {
       for (let j = 0; j < rankings[i].rankings.length; j++) {
-        let team = rankings[i].rankings[j].toLowerCase().trim();
+        let team = rankings[i].rankings[j].trim();
         let pointsToAdd = 20 - j;
         let index = allTeams.findIndex((obj) => obj.name === team);
         if (index === -1) {
@@ -110,8 +110,12 @@ class App extends React.Component {
       // showRankingsPage
       return (
         <div>
-          <Header isHome={this.state.isHome} switch={this.switchTab} />
-          <Table
+          <div className="navBar">
+            <StandingsSVG className="logo" id="active" />
+            <img src={LogoPNG} className="logo" alt="csgo_logo"></img>
+            <RulerSVG className="logo" onClick={this.switchTab} />
+          </div>
+          <Rankings
             className="rankingsTable"
             rankedTeams={this.state.rankedTeams}
             rankersCount={this.state.numOfRankers}
@@ -122,7 +126,11 @@ class App extends React.Component {
       // setRankingsPage
       return (
         <div>
-          <Header isHome={this.state.isHome} switch={this.switchTab} />
+          <div className="navBar">
+            <StandingsSVG className="logo" onClick={this.switchTab} />
+            <img src={LogoPNG} className="logo" alt="csgo_logo"></img>
+            <RulerSVG className="logo" id="active" />
+          </div>
           <Form unrankedTeams={this.state.unrankedTeams} />
         </div>
       );
