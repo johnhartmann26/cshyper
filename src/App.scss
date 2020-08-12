@@ -75,18 +75,19 @@ html {
 }
 // set
 .Form {
-  height: 50em;
-  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
 }
 .formElem {
-  border-radius: 2%;
-  text-align: center;
-  padding: 0.33em;
-  margin: 0.33em;
-  color: $light;
-  font-size: 1.2em;
-  font-weight: bolder;
+  display: flex;
+  height: 2em;
   background: $offGray;
+  margin: 0.5em 2em;
+  text-align: center;
+  line-height: 2em;
+  padding: 0.4em;
+  justify-content: flex-start;
+  border-radius: 2%;
 }
 .formElem:nth-child(21) {
   background: $bitter;
